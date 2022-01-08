@@ -34,9 +34,10 @@ def display_email(text, part=1):
             df_results_header = Email.f_find_person_in_header(header, df_result=df_results_header)
             list_words_headers = print_highlighted_text(header, df_results_header)
         else:
-            list_words_headers = []
+            list_words_headers = None
 
         df_result = nlp.f_ner(text, lang=lang)
+        logging.debug(f"NER results for text '{text}' are: {df_result}")
         df_signature = nlp.f_detect_email_signature(text, df_ner=df_result)
         if df_signature is not None and len(df_signature) > 0:
             start_signature_position = df_signature["start"].values[0]
@@ -45,7 +46,7 @@ def display_email(text, part=1):
             list_words_signature = print_highlighted_text(text_signature, df_result, offset=start_signature_position)
         else:
             text_body = text
-            list_words_signature = []
+            list_words_signature = None
         list_words_body = print_highlighted_text(text_body, df_result)
 
         return None, lang, list_words_headers, list_words_body, list_words_signature
@@ -54,7 +55,7 @@ def display_email(text, part=1):
                None, None, None, None
 
 
-utils.f_setup_logger(level_sysout=logging.ERROR, level_file=logging.INFO, folder_path="logs")
+utils.f_setup_logger(level_sysout=logging.ERROR, level_file=logging.DEBUG, folder_path="logs")
 
 
 iface = gradio.Interface(title="Parser of email",
