@@ -9,8 +9,9 @@ def print_highlighted_text(text, df_result, offset=0):
     list_values = []
     for match in iter_match:
         word = match.string[start_pos:match.start()]
-
+        logging.debug(f"word '{word}' was found between {start_pos} and {match.start()}")
         df_entity = df_result.query(f"{start_pos + offset}>=start & {match.start() + offset}<=end").head(1)
+        logging.debug(f"Found entites are: {df_entity}")
         if len(df_entity) == 1:
             entity = df_entity["entity"].values[0]
         else:
@@ -62,8 +63,10 @@ iface = gradio.Interface(title="Parser of email",
                          description="Small application that can extract a specific email in a thread of email,"
                                      " highlights the entities found in the text (person, organization, date,...)"
                                      " and extract email signature if any.",
-                         article="The model used to detect signature is described in detail in this article"
-                                 "<a href=\"https://medium.com/@jean-baptiste.polle/lstm-model-for-email-signature-detection-8e990384fefa\">",
+                         article="*The model used to detect signature is described in detail here: "
+                                 "<a href=\"https://medium.com/@jean-baptiste.polle/lstm-model-for-email-signature-detection-8e990384fefa\">"
+                                 "https://medium.com/@jean-baptiste.polle/lstm-model-for-email-signature-detection-8e990384fefa"
+                                 "</a>",
                          fn=display_email,
                          inputs=["textbox",
                              gradio.inputs.Number(default=1, label="Email number in thread")],
