@@ -55,13 +55,15 @@ def display_email(text, part=1):
                None, None, None, None
 
 
-utils.f_setup_logger(level_sysout=logging.ERROR, level_file=logging.DEBUG, folder_path="logs")
+utils.f_setup_logger(level_sysout=logging.DEBUG, level_file=logging.DEBUG, folder_path="logs")
 
 
 iface = gradio.Interface(title="Parser of email",
                          description="Small application that can extract a specific email in a thread of email,"
                                      " highlights the entities found in the text (person, organization, date,...)"
                                      " and extract email signature if any.",
+                         article="The model used to detect signature is described in detail in this article"
+                                 "<a href=\"https://medium.com/@jean-baptiste.polle/lstm-model-for-email-signature-detection-8e990384fefa\">",
                          fn=display_email,
                          inputs=["textbox",
                              gradio.inputs.Number(default=1, label="Email number in thread")],
