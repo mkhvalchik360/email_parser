@@ -10,7 +10,7 @@ def print_highlighted_text(text, df_result, offset=0):
     for match in iter_match:
         word = match.string[start_pos:match.start()]
         logging.debug(f"word '{word}' was found between {start_pos} and {match.start()}")
-        df_entity = df_result.query(f"{start_pos + offset}>=start & {match.start() + offset}<=end").head(1)
+        df_entity = df_result.query(f"{start_pos + offset}>=start & {start_pos + offset}<=end").head(1)
         logging.debug(f"Found entites are: {df_entity}")
         if len(df_entity) == 1:
             entity = df_entity["entity"].values[0]
@@ -56,7 +56,7 @@ def display_email(text, part=1):
                None, None, None, None
 
 
-utils.f_setup_logger(level_sysout=logging.DEBUG, level_file=logging.DEBUG, folder_path="logs")
+utils.f_setup_logger(level_sysout=logging.INFO, level_file=logging.INFO, folder_path="logs")
 
 
 iface = gradio.Interface(title="Parser of email",
