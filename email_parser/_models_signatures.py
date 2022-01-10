@@ -81,15 +81,17 @@ def f_retrieve_entities_for_line(df_ner, start=0, end=1e12):
         df = df_ner.query(f"""(start>= {start}  and end <= {end}) or (start<={start}  and end>={end})""")
         return df
 
+
 embedder_model = SentenceTransformer("distiluse-base-multilingual-cased-v1")
 
+
 def f_create_embedding_inv_dist_feature(text1, text2):
-  """ Computing distance between two texts based on their embedding
-  provided by the SentenceTransformer above"""
-  embedding_merci = embedder_model.encode(text1)
-  embedding_line = embedder_model.encode(text2)
-  dist = distance.cosine(embedding_merci, embedding_line)
-  return 1 / (dist + 0.01)
+    """ Computing distance between two texts based on their embedding
+    provided by the SentenceTransformer above"""
+    embedding_merci = embedder_model.encode(text1)
+    embedding_line = embedder_model.encode(text2)
+    dist = distance.cosine(embedding_merci, embedding_line)
+    return min(5, 1 / (dist + 0.0001))
 
 
 def f_create_email_lines_features(text, df_ner=None, position_offset=0):
