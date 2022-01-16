@@ -157,10 +157,13 @@ def generate_x_y(df, minmax_scaler=None, standard_scaler=None, n_last_lines_to_k
     df, minmax_scaler, standard_scaler = f_scale_parameters(df, minmax_scaler, standard_scaler)
     x = df[list_columns].to_numpy()[-n_last_lines_to_keep:, :]
     x = np.expand_dims(x, axis=0)
+    x = pad_sequences(x, dtype='float64', value=0, maxlen=n_last_lines_to_keep)
+
     y = df["is_signature"].to_numpy()[-n_last_lines_to_keep:]
     y = np.expand_dims(y, axis=0)
-    return x, y, minmax_scaler, standard_scaler
-
+    y_out = pad_sequences(y, value=0, maxlen=n_last_lines_to_keep)
+    y_mask = pad_sequences(y,  value=-1, maxlen=n_last_lines_to_keep)
+    return x, y_out, y_mask, minmax_scaler, standard_scaler
 
 def f_scale_parameters(df_tagged_data, minmax_scaler=None, standard_scaler=None):
     # df_tagged_data = df_tagged_data.copy(deep=True)

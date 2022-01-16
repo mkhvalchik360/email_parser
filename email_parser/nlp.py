@@ -285,14 +285,14 @@ def f_detect_email_signature(text, df_ner=None, cut_off_score=0.6, lang=default_
     #     We add dummy value for signature in order to use same function than for training of the model
     df_features["is_signature"] = -2
 
-    x, y_out, _, _ = _models_signatures.generate_x_y(df_features, _models_signatures.minmax_scaler,
+    x, y_out, y_mask, _, _ = _models_signatures.generate_x_y(df_features, _models_signatures.minmax_scaler,
                                                              _models_signatures.standard_scaler)
 
     y_predict = _models_signatures.model.predict(x)
-    y_predict_value = (y_predict> cut_off_score).reshape([-1])
+    y_predict_value = (y_predict[y_mask != -1]> cut_off_score).reshape([-1])
     y_predict_value = np.pad(y_predict_value, (len(df_features) - len(y_predict_value), 0), constant_values=0)[
                       -len(df_features):]
-    y_predict_score = y_predict.reshape([-1])
+    y_predict_score = y_predict[y_mask != -1].reshape([-1])
     y_predict_score = np.pad(y_predict_score, (len(df_features) - len(y_predict_score), 0), constant_values=1)[
                       -len(df_features):]
 
