@@ -1,3 +1,7 @@
+import os
+os.system("pip uninstall -y gradio")
+os.system("pip install gradio==2.7.5.2")
+
 import logging, regex
 import gradio
 from email_parser import utils, nlp
