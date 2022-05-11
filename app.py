@@ -1,6 +1,8 @@
 import os
 os.system("pip uninstall -y gradio")
 os.system("pip install gradio==2.7.5.2")
+os.system("pip install typing-extensions --upgrade")
+
 
 import logging, regex
 import gradio
