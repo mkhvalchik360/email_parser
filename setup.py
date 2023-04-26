@@ -23,4 +23,5 @@ setup(name='email_parser',
                         'umap-learn==0.5.1',
                         'dateparser==1.0.0',
                         'transformers>=4.3',
+                        'typing-extensions==3.7.4',
                         'gradio>=2.7'])
